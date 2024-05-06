@@ -1,5 +1,6 @@
 import com.foodieapp.model.CuisineType;
 import com.foodieapp.model.ItemType;
+import com.foodieapp.model.MenuItem;
 import com.foodieapp.model.Restaurant;
 import com.foodieapp.repository.RestaurantRepository;
 import com.foodieapp.repository.RestaurantRepositoryImpl;
@@ -13,7 +14,9 @@ public class MenuBrowser {
     private Scanner sc=new Scanner(System.in);
     List<Restaurant> restList;
 
-    public MenuBrowser(List<Restaurant> restList) {
+
+    public MenuBrowser() {
+
         restList=new ArrayList<>();
     }
 
@@ -26,30 +29,42 @@ public class MenuBrowser {
         switch(choice){
             case 1:
                 System.out.println("Enter Location");
-                String location= sc.nextLine();
+                String location= sc.next()+sc.nextLine();
                 restList=repository.findRestaurantByLocation(location);
                 if(restList!=null){
                     restList.forEach(r -> System.out.println(r));
                 }
                 break;
             case 2:
-                System.out.println("Enter Cuisine Type : VEG, NON_VEG , VEGAN ");
-                String type=sc.nextLine();
-                CuisineType type1=CuisineType.valueOf(type);
-                restList=repository.findRestaurantByType(type1);
-                if(restList!=null){
-                    restList.forEach(r-> System.out.println(r));
+                System.out.println("Enter Cuisine Type: VEG, NON_VEG, VEGAN");
+                String type =sc.next()+sc.nextLine().toUpperCase();
+                try {
+                    CuisineType type1 = CuisineType.valueOf(type);
+                    restList = repository.findRestaurantByType(type1);
+                    if (restList != null && !restList.isEmpty()) {
+                        restList.forEach(r -> System.out.println(r));
+                    } else {
+                        System.out.println("No restaurants found for the given type.");
+                    }
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Invalid cuisine type. Please enter one of: VEG, NON_VEG, VEGAN");
                 }
                 break;
             case 3:
                 System.out.println("Enter Name of Restaurant");
-                String name=sc.next()+sc.nextLine();
-                restList=repository.findRestaurantByName(name);
-                if(restList!=null){
-                    for(Restaurant rest:restList){
-                        System.out.println(rest.getMenuItems());
+                sc.nextLine();
+                String name = sc.nextLine();
+                List<Restaurant> restaurantList = repository.findRestaurantByName(name);
+                for (Restaurant restaurant : restaurantList) {
+                    System.out.println("Restaurant: " + restaurant.getName());
+                    System.out.println("Menu Items:");
+                    if (restaurant.getMenuItems() != null) {
+                        for (MenuItem item : restaurant.getMenuItems()) {
+                            System.out.println(item);
+                        }
+                    } else {
+                        System.out.println("No menu items available");
                     }
-                    restList.forEach(e -> System.out.println(e));
                 }
                 break;
             default:

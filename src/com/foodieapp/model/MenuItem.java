@@ -56,6 +56,6 @@ public class MenuItem {
                 ", price=" + price +
                 ", type=" + type +
                 ", calorieCount=" + calorieCount +
-                '}'+super.toString();
+                '}';
     }
 }

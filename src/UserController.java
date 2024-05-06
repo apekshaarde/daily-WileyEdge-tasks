@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class UserController {
     Scanner sc=new Scanner(System.in);
-    private MenuBrowser browser=new MenuBrowser(new ArrayList<>());
+    private MenuBrowser browser=new MenuBrowser();
      public void start(){
          while (true){
              System.out.println("====Welcome to User====");

@@ -27,7 +27,7 @@ public abstract class Restaurant {
         this.location = location;
         this.openingTime = openingTime;
         this.closingTime = closingTime;
-        menuItems=new ArrayList<>();
+        this.menuItems=menuItems;
         this.isActive = isActive;
     }
 

@@ -10,9 +10,9 @@ import java.util.Scanner;
 public class AdminController {
     private RestaurantRepository repository=new RestaurantRepositoryImpl();
     private Restaurant restaurant1;
-
     private MenuItem item;
     Scanner sc=new Scanner(System.in);
+
     public void start(){
         while(true){
             System.out.println("====Welcome to Admin====");
@@ -23,19 +23,28 @@ public class AdminController {
             int choice =sc.nextInt();
             switch (choice){
                 case 1:
-                    CuisineType cuisineType = null;
-                    ItemType type=null;
-                    item=new MenuItem("Biryani",300,type.NON_VEG,2500);
+                    CuisineType cuisineType = CuisineType.FAST_FOOD_RESTAURANT;
+                    ItemType type=ItemType.NON_VEG;
+                    item=new MenuItem("Biryani",300,type,2500);
+                    List<MenuItem> menuItems = new ArrayList<>();
+                    menuItems.add(item);
                     restaurant1=new FastFoodRestaurant(1,"Arsalan",
-                            cuisineType.FAST_FOOD_RESTAURANT,"Mohali", LocalTime.of(10,00),
+                            cuisineType,"Mohali", LocalTime.of(10,00),
                             LocalTime.of(21,00),
-                            new ArrayList<>(List.of(item)),false);
+                            menuItems, true);
                     if(restaurant1!=null) {
                         repository.addRestaurant(restaurant1);
                     }
                     else{
                         System.out.println("InAppropriate Data");
                     }
+//                    if (restaurant1 instanceof FastFoodRestaurant) {
+//                        FastFoodRestaurant fastFoodRestaurant = (FastFoodRestaurant) restaurant1;
+//                        // Now you can use fastFoodRestaurant to access specific properties
+//                        System.out.println("Menu Items: " + fastFoodRestaurant.getMenuItems());
+//                    } else {
+//                        System.out.println("Restaurant is not a FastFoodRestaurant");
+//                    }
                     System.out.println("Restaurant added"+restaurant1);
                     break;
                 case 2:

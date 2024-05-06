@@ -1,9 +1,6 @@
 package com.foodieapp.repository;
 
-import com.foodieapp.model.CuisineType;
-import com.foodieapp.model.FastFoodRestaurant;
-import com.foodieapp.model.MenuItem;
-import com.foodieapp.model.Restaurant;
+import com.foodieapp.model.*;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -15,33 +12,23 @@ public class RestaurantRepositoryImpl implements RestaurantRepository{
 
     private Map<Long,Restaurant> restaurants;
     CuisineType cuisineType;
-
-
     public RestaurantRepositoryImpl(){
         restaurants = new HashMap<>();
         init();
     }
 
     public void init(){
+        MenuItem item = new MenuItem("Biryani", 300, ItemType.NON_VEG, 2500);
        Restaurant restaurant1 = new FastFoodRestaurant(1,"Arsalan",
                cuisineType.FAST_FOOD_RESTAURANT,"Mohali", LocalTime.of(10,00),
-               LocalTime.of(21,00),new ArrayList<>(),false);
+               LocalTime.of(21,00),new ArrayList<>(List.of(item)),true);
 
        restaurants.put(restaurant1.getRestaurantId(),restaurant1);
-
     }
 
     public void addRestaurant(Restaurant restaurant) {
-//        if (restaurant.getMenuItems() == null) {
-//            restaurant.setMenuItems(new ArrayList<>());
-//        }
             restaurants.put(restaurant.getRestaurantId(), restaurant);
-
-
     }
-
-
-
 
     public void setActivationStatus(boolean status,long restaurantId) {
         Restaurant restaurant=restaurants.get(restaurantId);
@@ -53,7 +40,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository{
 //                restaurant.setOpeningTime(restaurant.getOpeningTime());
 //                restaurant.setClosingTime(restaurant.getClosingTime());
 //            }
-            System.out.println("Resturant Status of is set as Active as of "+LocalTime.now());
+            System.out.println("Restaurant Status of is set as Active as of "+LocalTime.now());
         }
            else {
                System.out.println("Restaurant "+restaurant.getName()+" is not active now");
@@ -123,8 +110,8 @@ public class RestaurantRepositoryImpl implements RestaurantRepository{
 
     public List<Restaurant> findRestaurantByType(CuisineType type) {
         List<Restaurant> restaurantList=new ArrayList<>();
-        for (Restaurant restaurantObj :restaurants.values() ){
-            if(  restaurantObj.getCuisineType().toString().equalsIgnoreCase(type.toString())){
+        for (Restaurant restaurantObj : restaurants.values() ){
+            if(  restaurantObj.getCuisineType() == type ){
                 restaurantList.add(restaurantObj);
             }
         }
@@ -136,7 +123,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository{
 
     public List<Restaurant> findAllActiveRestaurant() {
         List<Restaurant> restaurantList=new ArrayList<>();
-        for (Restaurant restaurantObj :restaurants.values() ){
+        for (Restaurant restaurantObj : restaurants.values() ){
             if(  restaurantObj.isActive()){
                 restaurantList.add(restaurantObj);
             }
@@ -149,7 +136,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository{
 
     public List<Restaurant> findAllDeactivatedRestaurant() {
         List<Restaurant> restaurantList=new ArrayList<>();
-        for (Restaurant restaurantObj :restaurants.values() ){
+        for (Restaurant restaurantObj : restaurants.values() ){
             if( ! restaurantObj.isActive()){
                 restaurantList.add(restaurantObj);
             }
